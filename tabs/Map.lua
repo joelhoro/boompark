@@ -2,23 +2,61 @@ Map = class()
 
 function Map:init(info)
     self.time = info.time
-    self.defense = info.defense
+    self.defense ={}
+    for i,defense in ipairs(info.defense) do
+        self:AddDefense(defense)
+    end
     self.launchareas = info.launchareas
     self.attackers = info.attackers
     self.attack = {}
 end
 
-function Map:SaveLevel()
-    saveLocalData("map",json.encode(self))
+function Map:CreateNewLaunchArea()
 end
+
+function Map:CreateNewDefense()
+end
+
+function Map:SerializingFields()
+    return { "time", "attackers" }
+end
+
+function Map:Serialize()
+    local out = {}
+    for i,v in ipairs(self:SerializingFields()) do
+        out[v] = self[v]
+    end
+    return out
+end
+
+function Map:DeSerialize(t)
+    local data = json.decode(t)
+    for i,v in ipairs(self:SerializingFields()) do
+        self[v] = data[v]
+    end
+end
+
+function Map:SaveLevel()
+    sprite()
+    print("Level saved")
+    local output = json.encode(self:Serialize())
+    print(output)
+    saveText("Dropbox:map.txt",output)
+end
+
+function Map:LoadLevel()
+    self:DeSerialize(readText("Dropbox:map.txt"))
+end
+
 
 function Map:LoadLevel()
     local map = readLocalData("map")
     self = json.decode(map)
 end
 
-function Map:adddefense(obj)  
+function Map:AddDefense(obj)  
     self.defense[#self.defense+1] = obj
+    obj.mapposition = #self.defense
 end
 
 function Map:addattack(obj)  

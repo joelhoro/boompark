@@ -10,7 +10,26 @@ STATUS_LEVELEDITOR = 5
 function Game:init()
     self.level = readLocalData("level",1)
     self.speed = 20
+    self.cheat = Dummy()
     self:restart()
+end
+
+function Game:SetParameters()
+    parameter.clear()
+    if self.status == STATUS_LEVELEDITOR then
+        parameter.integer("attackers",1,15,self.map.attackers, function(a) self.map.attackers = a end )
+        parameter.action("Load level", function() self.map:LoadLevel() end )
+        parameter.action("Save level", function() self.map:SaveLevel() end )
+        parameter.action("Add launcharea", function() self.map:CreateNewLaunchArea() end )
+        parameter.action("Add building", function() self.map:CreateNewDefense() end )
+        parameter.action("Test level", function() self:TestLevel() end )
+        parameter.action("Back to game", function() self:SetStatus(STATUS_DEPLOYMENT) end)
+    else
+        SavedBooleanParameter("TIMELIMIT",true)
+        SavedBooleanParameter("DEBUGMODE",true,function(m) self.cheat=Cheatmode(m) end )    
+
+        parameter.action("Level editor", function() self:SetStatus(STATUS_LEVELEDITOR) end)
+    end
 end
 
 function Game:changeLevel(l)
@@ -23,9 +42,18 @@ function Game:changeLevel(l)
     self:SetStatus(STATUS_DEPLOYMENT)
 end
 
+function Game:TestLevel()
+    -- to be implemented
+end
+
 function Game:SetStatus(status)
     self.status = status
-
+    self:SetParameters()
+    
+    for i,d in ipairs(self.map.defense) do
+        d.isdraggable = (status == STATUS_LEVELEDITOR )
+    end
+    
     if status == STATUS_DEPLOYMENT then
         music("Game Music One:Nothingness")
     elseif status == STATUS_ATTACK then
@@ -90,8 +118,16 @@ function Game:draw()
         self.gameresults:draw()
     end
     popMatrix()
+    
+    self.cheat:draw()
 end
+
+function Game:keyboard(key)
+    self.cheat:keyboard(key)
+end
+
 
 function Game:touched(touch)
     self.map:touched(touch)
+    self.cheat:touched(touch)
 end

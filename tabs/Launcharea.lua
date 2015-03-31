@@ -34,7 +34,8 @@ function Launcharea:touched(touch)
         Draggable.touched(self,touch)
         return
     end
-    if self.IsInside(touch) then
+ --   print(touch)
+    if touch.state == BEGAN and self:IsInside(touch) then
         if game.map.attackers > 0 then
             DoSound("Game Sounds One:Pop 2")
             sound(DATA, "ZgFARiYuQHIbQEBAcNBtPnqfYj5eKyc/RABAf0BKQFdAaEBA")
