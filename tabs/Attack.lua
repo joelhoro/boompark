@@ -1,11 +1,11 @@
 Attack = class()
 
 function Distance(o1,o2)
-    return norm(vec2(o1.x,o1.y)-vec2(o2.x,o2.y))
+    return vec2(o1.x,o1.y):dist(vec2(o2.x,o2.y))
 end
 
 function norm(v)
-    return math.sqrt(v.x^2+v.y^2)
+    return Distance(v,vec2(0,0))
 end
 
 function Attack:init(x,y,type)

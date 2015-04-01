@@ -6,7 +6,6 @@ FPS = 60
 function setup()
 --    img = readImage("Small World:Court")
 --    saveImage("Project:Icon",img)
-
     supportedOrientations(LANDSCAPE_ANY)
     displayMode(DISPLAYMODE)
     game = Game()
