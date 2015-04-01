@@ -56,12 +56,12 @@ function Defense:Destroy()
     self.underattack = false
     self:ActivateStar()
     sound(SOUND_POWERUP, 45464)
-    if game.map:defensealive()==0 then
+    if game.map:DefenseAlive()==0 then
         game:SetStatus(STATUS_OVER)
     end
 end
 
-function Defense:hit(damage)
+function Defense:Hit(damage)
     if not self.underattack then -- if this is the first hit
         self.shaketween = tween(0.2,self,{dx=10},
             {loop=tween.loop.pingpong, easing=tween.easing.sineInOut })

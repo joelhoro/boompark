@@ -66,7 +66,7 @@ function Launcharea:touched(touch)
                 SetTween(a, tween(0.5,a,destination,tween.easing.cubicInOut))
             end
             self.attackers[#self.attackers+1] = attacker
-            game.map:addattack(attacker)
+            game.map:AddAttack(attacker)
             local path = { {r=self.initialr*1.3},{r=self.initialr} }
             self.tween = tween.path(1,self,path,tween.easing.sineInOut)
 

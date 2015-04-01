@@ -11,7 +11,7 @@ function Game:init()
     self.level = readLocalData("level",1)
     self.speed = 20
     self.cheat = Dummy()
-    self:restart()
+    self:Restart()
 end
 
 function Game:SetParameters()
@@ -27,8 +27,8 @@ function Game:SetParameters()
     else
         SavedBooleanParameter("TIMELIMIT",true)
         SavedBooleanParameter("DEBUGMODE",true,function(m) self.cheat=Cheatmode(m) end )    
-        parameter.integer("Level",1,NumberOfMaps(),self.level,function(l) self:ChangeLevel(l) end)
-        parameter.action("Go to next status", function() self:GoToNextStatus() end )
+  --      parameter.integer("Level",1,NumberOfMaps(),self.level,function(l) self:ChangeLevel(l) end)
+  --      parameter.action("Go to next status", function() self:GoToNextStatus() end )
         parameter.action("Level editor", function() self:SetStatus(STATUS_LEVELEDITOR) end)
     end
 end
@@ -77,8 +77,8 @@ end
 function Game:Finish()
     tween.stopAll()
 
-    if game.map:defensealive()==0 then
-        self.map:collectStars()
+    if game.map:DefenseAlive()==0 then
+        self.map:CollectStars()
         music("Game Music One:Happy Song")
         message = "You won!"
         messageColor = color(241, 230, 44, 255)
@@ -90,7 +90,7 @@ function Game:Finish()
     self.gameresults = GameResults(message,messageColor)
 end
 
-function Game:increaselevel()
+function Game:IncreaseLevel()
     local level = self.level+1
     if level > NumberOfMaps() then
         level = 1
@@ -98,11 +98,11 @@ function Game:increaselevel()
     self:ChangeLevel(level)  
 end
 
-function Game:restart()
+function Game:Restart()
     self:ChangeLevel(self.level)
 end
 
-function Game:updateProgress()
+function Game:UpdateProgress()
     if self.status ~= STATUS_ATTACK or not TIMELIMIT then
         return
     end
@@ -118,7 +118,7 @@ function Game:draw()
    -- scale(0.5,0.5)
 
     self.map:draw()
-    self:updateProgress()
+    self:UpdateProgress()
     self.progress:draw()
     if self.gameresults then
         self.gameresults:draw()

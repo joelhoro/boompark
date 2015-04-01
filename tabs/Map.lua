@@ -67,7 +67,7 @@ function Map:AddDefense(obj)
     obj.mapposition = #self.defense
 end
 
-function Map:addattack(obj)  
+function Map:AddAttack(obj)  
     self.attack[#self.attack+1] = obj
     local x,y,size = obj.x,obj.y,obj.size
     obj.x = posx
@@ -76,13 +76,13 @@ function Map:addattack(obj)
     self.attackers = self.attackers - 1
     tween(1,obj,{x=x,y=y,size=size},tween.easing.cubicIn, function()
       obj:SetReady()
-      if self:attackersReady() then
+      if self:AttackersReady() then
           game:SetStatus(STATUS_ATTACK)
       end
     end)
 end
 
-function Map:collectStars()
+function Map:CollectStars()
     local stars = #self.defense
     local space = 55
     local pos = WIDTH/2 - stars * space /2
@@ -92,7 +92,7 @@ function Map:collectStars()
     end
 end
 
-function Map:attackersReady()
+function Map:AttackersReady()
     -- check if all the attackers have been deployed
     -- and if so, whether they are all ready
     if self.attackers > 0 then return false end
@@ -104,11 +104,11 @@ function Map:attackersReady()
     return true
 end
 
-function Map:addlauncharea(obj)  
+function Map:AddLauncharea(obj)  
     self.launchareas[#self.launchareas+1] = obj
 end
 
-function Map:defensealive()
+function Map:DefenseAlive()
     local alive = 0
     for i,defense in ipairs(self.defense) do
         if defense.alive then

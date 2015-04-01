@@ -1,7 +1,5 @@
 Attack = class()
 
-
-
 function Distance(o1,o2)
     return norm(vec2(o1.x,o1.y)-vec2(o2.x,o2.y))
 end
@@ -90,7 +88,7 @@ function Attack:move()
         self.y = self.y + self.speed*diff.y*game.speed
       --  DoSound("A Hero's Quest:Swing 1",5,0.3)
     else
-        closest:hit(self.damage)
+        closest:Hit(self.damage)
     end
     self:keepdistance()
 end
