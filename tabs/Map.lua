@@ -87,7 +87,7 @@ function Map:CollectStars()
     local space = 55
     local pos = WIDTH/2 - stars * space /2
     for i,d in ipairs(self.defense) do
-        d.star:spiral(pos,400,50)
+        d.star:Spiral(pos,400,50)
         pos = pos + space
     end
 end

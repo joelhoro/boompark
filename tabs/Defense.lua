@@ -47,7 +47,7 @@ end
 
 function Defense:ActivateStar()
     self.star = Star(self.x,self.y,self.width,0)
-    self.star:activate()
+    self.star:Activate()
 end
 
 function Defense:Destroy()
