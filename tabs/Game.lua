@@ -27,12 +27,13 @@ function Game:SetParameters()
     else
         SavedBooleanParameter("TIMELIMIT",true)
         SavedBooleanParameter("DEBUGMODE",true,function(m) self.cheat=Cheatmode(m) end )    
-
+        parameter.integer("Level",1,NumberOfMaps(),self.level,function(l) self:ChangeLevel(l) end)
+        parameter.action("Go to next status", function() self:GoToNextStatus() end )
         parameter.action("Level editor", function() self:SetStatus(STATUS_LEVELEDITOR) end)
     end
 end
 
-function Game:changeLevel(l)
+function Game:ChangeLevel(l)
     self.gameresults = nil
     self.level = l
     print("Loading level ",l)
@@ -47,12 +48,17 @@ function Game:TestLevel()
 end
 
 function Game:SetStatus(status)
-    self.status = status
-    self:SetParameters()
-    
+    if self.status ~= status then
+        self.status = status
+        self:SetParameters()
+    end
     for i,d in ipairs(self.map.defense) do
         d.isdraggable = (status == STATUS_LEVELEDITOR )
     end
+    for i,d in ipairs(self.map.launchareas) do
+        d.isdraggable = (status == STATUS_LEVELEDITOR )
+    end
+    
     
     if status == STATUS_DEPLOYMENT then
         music("Game Music One:Nothingness")
@@ -89,11 +95,11 @@ function Game:increaselevel()
     if level > NumberOfMaps() then
         level = 1
     end
-    self:changeLevel(level)  
+    self:ChangeLevel(level)  
 end
 
 function Game:restart()
-    self:changeLevel(self.level)
+    self:ChangeLevel(self.level)
 end
 
 function Game:updateProgress()

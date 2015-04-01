@@ -8,7 +8,14 @@ function Launcharea:init(x,y,r)
     self.initialr = r
     self.attackers  = {}
     self.flatratio = 0.5
+    self.isdraggable = false
+    self.arrowshift = 0
 end
+
+function Launcharea:Serialize()
+    return {x=self.x,y=self.y,r=self.r}
+end
+
 
 function Launcharea:draw()
     pushStyle()
@@ -18,6 +25,10 @@ function Launcharea:draw()
     sprite("Small World:Base Large",self.x,self.y,self.r,self.r*self.flatratio)
     text(#self.attackers,self.x+self.r*0.4, self.y-self.r*self.flatratio*.5)
     popStyle()
+    self:DragIcon(self.x+self.r/2,self.y+self.r*self.flatratio/2)
+    if self.arrowshift > 0 then
+        sprite("Cargo Bot:Command Grab",self.x,self.y + self.arrowshift)
+    end
 end
 
 
@@ -29,13 +40,20 @@ function Launcharea:IsInside(touch)
     return ((touch.x-self.x)/self.flatratio)^2+(touch.y-self.y)^2 < self.r^2
 end
 
+function Launcharea:IsDraggable()
+    return self.isdraggable
+end
+
+function Launcharea:PointArrow()
+     self.arrowshift = self.r*self.flatratio
+    self.tween = tween(1,self,{arrowshift=0},{loop=tween.loop.forever})
+end
+
 function Launcharea:touched(touch)
     if game.status == STATUS_LEVELEDITOR then
         Draggable.touched(self,touch)
         return
-    end
- --   print(touch)
-    if touch.state == BEGAN and self:IsInside(touch) then
+    elseif touch.state == BEGAN and self:IsInside(touch) then
         if game.map.attackers > 0 then
             DoSound("Game Sounds One:Pop 2")
             sound(DATA, "ZgFARiYuQHIbQEBAcNBtPnqfYj5eKyc/RABAf0BKQFdAaEBA")

@@ -11,6 +11,10 @@ function Defense:types()
             }
 end
 
+function Defense:Serialize()
+    return { x = self.x, y = self.y, type = self.type }
+end
+
 function Defense:init(x,y,type,mapposition)
     self.x = x
     self.y = y
@@ -38,6 +42,7 @@ function Defense:init(x,y,type,mapposition)
     self.star = Dummy()
     self.underattack = false
     self.smoke = Dummy()
+    self.zoom = 1
 end
 
 function Defense:ActivateStar()
@@ -72,7 +77,7 @@ function Defense:hit(damage)
 end
 
 function Defense:StartDragging(touch)
-    self.dragtween = tween.path(0.3,self,{{dx=10},{dx=-10}},{loop=tween.loop.pingpong})
+    self.dragtween = tween.path(0.3,self,{{zoom=1.1},{zoom=0.9}},{loop=tween.loop.pingpong})
 end
 
 function Defense:IsDraggable()
@@ -97,8 +102,9 @@ function Defense:touched(touch)
 end
 
 function Defense:draw()
-    sprite(self.sprite,self.x+self.dx,self.y+self.dy)
+    sprite(self.sprite,self.x+self.dx,self.y+self.dy,self.width*self.zoom,self.height*self.zoom)
     self.smoke:draw()
+    self:DragIcon(self.x+self.width/2*self.zoom,self.y+self.width/2*self.zoom)
  
    if self.alive then
         local progress = Progressbar(self.x,self.y+self.height/1.5,self.width,10,1)

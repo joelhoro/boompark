@@ -26,6 +26,14 @@ function Map:Serialize()
     for i,v in ipairs(self:SerializingFields()) do
         out[v] = self[v]
     end
+    out.defense = {}
+    out.launchareas = {}
+    for i, d in ipairs(self.defense) do
+        out.defense[i] = d:Serialize()
+    end
+    for i, d in ipairs(self.launchareas) do
+        out.launchareas[i] = d:Serialize()
+    end
     return out
 end
 
@@ -113,6 +121,9 @@ end
 function Map:touched(touch)
     for i,obj in ipairs(self.launchareas) do
         obj:touched(touch)
+        if touch.state == BEGAN then
+            obj:PointArrow()
+        end
     end
     for i,obj in ipairs(self.defense) do
         obj:touched(touch)
