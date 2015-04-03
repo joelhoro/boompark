@@ -6,7 +6,10 @@ function Map:init(info)
     for i,defense in ipairs(info.defense) do
         self:AddDefense(defense)
     end
-    self.launchareas = info.launchareas
+    self.launchareas = {}
+    for i,area in ipairs(info.launchareas) do
+        self:AddLauncharea(area)
+    end
     self.attackers = info.attackers
     self.attack = {}
 end
@@ -65,6 +68,12 @@ end
 function Map:AddDefense(obj)  
     self.defense[#self.defense+1] = obj
     obj.mapposition = #self.defense
+    Draggable:Attach(obj, {
+        IsInside = function(touch) return obj:IsInside(touch) end,
+        StartDragging = function(touch) return obj:StartDragging(touch) end
+    } )
+    
+--    obj:AttachDraggable()
 end
 
 function Map:AddAttack(obj)  
@@ -106,6 +115,10 @@ end
 
 function Map:AddLauncharea(obj)  
     self.launchareas[#self.launchareas+1] = obj
+    Draggable:Attach(obj,{ 
+        IsInside      = function(touch) return obj:IsInside(touch) end,
+        StartDragging = function(touch) return obj:StartDragging(touch) end
+     })
 end
 
 function Map:DefenseAlive()
@@ -121,10 +134,10 @@ end
 function Map:touched(touch)
     for i,obj in ipairs(self.launchareas) do
         obj:touched(touch)
-        if touch.state == BEGAN then
-            obj:PointArrow()
-        end
-    end
+      --  if touch.state == BEGAN then
+    --        obj:PointArrow()
+  --      end
+    end  
     for i,obj in ipairs(self.defense) do
         obj:touched(touch)
     end

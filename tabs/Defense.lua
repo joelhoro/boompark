@@ -1,4 +1,4 @@
-Defense = class(Draggable)
+Defense = class()
 
 function Defense:types()
     return {
@@ -16,6 +16,7 @@ function Defense:Serialize()
 end
 
 function Defense:init(x,y,type,mapposition)
+    self.classname = "Defense"
     self.x = x
     self.y = y
     self.mapposition = mapposition
@@ -23,9 +24,7 @@ function Defense:init(x,y,type,mapposition)
     self.dy = 0
 
     self.alive = true
-    self.isdraggable = false
-
-    
+ 
     if type == nil then
         type=math.random(#types)
     end
@@ -43,6 +42,9 @@ function Defense:init(x,y,type,mapposition)
     self.underattack = false
     self.smoke = Dummy()
     self.zoom = 1
+end
+   
+function Defense:AttachDraggable() 
 end
 
 function Defense:ActivateStar()
@@ -80,31 +82,25 @@ function Defense:StartDragging(touch)
     self.dragtween = tween.path(0.3,self,{{zoom=1.1},{zoom=0.9}},{loop=tween.loop.pingpong})
 end
 
-function Defense:IsDraggable()
-    return self.isdraggable
-end
-
 function Defense:IsInside(touch)
     return (touch.x-self.x)^2+(touch.y-self.y)^2 < self.width^2
 end
 
 function Defense:touched(touch)
-    if self.isdraggable and touch.tapCount > 1 and touch.state==BEGAN and self:IsInside(touch) then
+    if self:IsDraggable() and touch.tapCount > 1 and touch.state==BEGAN and self:IsInside(touch) then
         local nexttype = self.type+1
         print(nexttype)
         if nexttype > #(Defense.types()) then nexttype = 1 end
         local defense = Defense(self.x,self.y,nexttype,self.mapposition)
         defense.isdraggable = true
         game.map.defense[self.mapposition] = defense
-    else
-        Draggable.touched(self,touch)
     end
 end
 
 function Defense:draw()
     sprite(self.sprite,self.x+self.dx,self.y+self.dy,self.width*self.zoom,self.height*self.zoom)
     self.smoke:draw()
-    self:DragIcon(self.x+self.width/2*self.zoom,self.y+self.width/2*self.zoom)
+   -- self:DragIcon(self.x+self.width/2*self.zoom,self.y+self.width/2*self.zoom)
  
    if self.alive then
         local progress = Progressbar(self.x,self.y+self.height/1.5,self.width,10,1)

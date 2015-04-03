@@ -1,5 +1,5 @@
 DISPLAYMODE = STANDARD
-DISPLAYMODE = FULLSCREEN
+--DISPLAYMODE = FULLSCREEN
 SOUNDON = true
 FPS = 60
 
@@ -9,6 +9,7 @@ function setup()
     supportedOrientations(LANDSCAPE_ANY)
     displayMode(DISPLAYMODE)
     game = Game()
+--    game:SetStatus(STATUS_LEVELEDITOR)
     font("AmericanTypewriter-Bold")
 end
 

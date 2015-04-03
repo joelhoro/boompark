@@ -53,10 +53,10 @@ function Game:SetStatus(status)
         self:SetParameters()
     end
     for i,d in ipairs(self.map.defense) do
-        d.isdraggable = (status == STATUS_LEVELEDITOR )
+        d:SetDraggable(status == STATUS_LEVELEDITOR )
     end
     for i,d in ipairs(self.map.launchareas) do
-        d.isdraggable = (status == STATUS_LEVELEDITOR )
+        d:SetDraggable(status == STATUS_LEVELEDITOR )
     end
     
     

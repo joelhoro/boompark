@@ -9,6 +9,7 @@ function norm(v)
 end
 
 function Attack:init(x,y,type)
+    self.classname = "Attack"
     self.x = x
     self.y = y
     self.size = 70
@@ -26,6 +27,7 @@ function Attack:init(x,y,type)
     self.sprite = sprites[math.random(#sprites)]
     self.wiggle=-1
 end
+
 
 function Attack:SetReady()
     print("Ready")
