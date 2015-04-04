@@ -11,5 +11,6 @@ function Cheatmode:draw()
         text(math.floor(game.level),self.x,self.y)
         local time = math.floor((1-game.progress.life)*game.map.time)
         text("Time: "..time,600,700)
+        text(math.floor(1/DeltaTime),WIDTH-15,20)
     end
 end
