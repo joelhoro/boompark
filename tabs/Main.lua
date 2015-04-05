@@ -4,6 +4,10 @@ SOUNDON = true
 FPS = 60
 
 function setup()
+    
+    saveProjectInfo("Author", "Joel Horowitz")
+    saveProjectInfo("Description", "Boom park game")
+    print(readProjectData("Company"))
 --    img = readImage("Small World:Court")
 --    saveImage("Project:Icon",img)
     supportedOrientations(LANDSCAPE_ANY)

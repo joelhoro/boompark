@@ -51,7 +51,7 @@ function Map:SaveLevel()
     sprite()
     print("Level saved")
     local output = json.encode(self:Serialize())
-    print(output)
+    print("Data: ",output)
     saveText("Dropbox:map.txt",output)
 end
 
@@ -65,8 +65,9 @@ function Map:LoadLevel()
     self = json.decode(map)
 end
 
-function Map:AddDefense(obj)  
-    self.defense[#self.defense+1] = obj
+function Map:AddDefense(obj,pos)  
+    pos = pos or #self.defense+1
+    self.defense[pos] = obj
     obj.mapposition = #self.defense
     Draggable:Attach(obj, {
         IsInside = function(touch) return obj:IsInside(touch) end,

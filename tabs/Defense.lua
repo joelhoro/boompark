@@ -92,8 +92,8 @@ function Defense:touched(touch)
         print(nexttype)
         if nexttype > #(Defense.types()) then nexttype = 1 end
         local defense = Defense(self.x,self.y,nexttype,self.mapposition)
-        defense.isdraggable = true
-        game.map.defense[self.mapposition] = defense
+        game.map:AddDefense(defense,self.mapposition)
+        defense:SetDraggable(true)
     end
 end
 

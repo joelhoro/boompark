@@ -30,7 +30,6 @@ end
 
 
 function Attack:SetReady()
-    print("Ready")
     self.ready = true
     SetTween(self,tween(0.3,self,{wiggle=1},{loop = tween.loop.pingpong}))
 end
