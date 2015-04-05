@@ -4,7 +4,6 @@ SOUNDON = true
 FPS = 60
 
 function setup()
-    
     saveProjectInfo("Author", "Joel Horowitz")
     saveProjectInfo("Description", "Boom park game")
     print(readProjectData("Company"))
